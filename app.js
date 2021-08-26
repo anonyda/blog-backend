@@ -1,5 +1,7 @@
 
 const express = require('express');
+const blogRouter = require('./routers/blogRouter');
+const {errorHandler} = require('./controllers/responseController');
 
 const app = express();
 
@@ -18,5 +20,9 @@ app.get('/', (req, res) => {
         message: 'Successful.'
     })
 });
+
+app.use('/blogs', blogRouter);
+
+app.use(errorHandler);
 
 module.exports = app;

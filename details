@@ -1,0 +1,48 @@
+
+Blog backend creation
+Model the database properly
+use sub documents
+Use hooks and validation in the model ( fat model - thin controllers )
+Create a global response sending function
+* Create a global error handling function : So that errors are sent from one place
+* in step e, you might have to create a separate error handling function that will generate separate error objects for different types of errors. Eg. Database error, Invalid input error, Unique key replication error or internal server error.
+Remember you are not sending all information the user, just some consistent error message that informs them where the error has occured
+Your code can upload the images at two places
+Local storage : can be used for storing information for local testing
+Cloudinary : This is for ensuring your app can be hosted on the cloud
+Cloudinary will have its own api for uploading image. (link, nodejs sdk)
+*Use this opportunity for creating adaptors, the storage can be changed based on the config that you pass.
+:red_circle:  Donot upload your cloudinary API keys in the config.env that goes to the git repo,
+You can push a dummy-config.env for the users.
+Update operation if doesnot work its fine, just ensure rest of the operations are taken care of ...
+
+
+// validations on related links 
+// https or https link -- href 
+// title should be valid 
+sendResponse( )
+// sending application error 
+// Types of error  Application + Operation Error 
+// Image not upload  (O) 
+// Database not connected  (O)
+// Error in saving data to database (O) 
+// Duplicate key error (A)
+// Invalid input or request body + Validation errors (A)
+// process the body --> validate -- invalid -- return a new error 
+// Resource not found (A)
+// Do i have an error object ( try/catch )
+// A function that can generate custom Error Object based on the input 
+// every error will have separate error code and message 
+sendAppError() 
+// Duplicate Key error 
+error.message; "110000 Duplicate key error" 
+const CustomErrorGenerator = (err)=>{
+    const error = new Error()
+    switch(err.message) { 
+        case "110000 Duplicate key error": 
+        error.message = "Email already in use ",
+        errors.statusCode = 401
+    }
+    return error 
+}
+error --> CustomErrorGenerator --> {statusCode, message} --> SendErrorResponse () --- send error to user 
