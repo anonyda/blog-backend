@@ -17,9 +17,12 @@
   "author": "Nida Shaikh",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^1.26.3",
+    "datauri": "^4.1.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.0",
+    "multer": "^1.4.3",
     "uniqid": "^5.4.0"
   }
 }

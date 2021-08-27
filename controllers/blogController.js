@@ -2,24 +2,36 @@ const uniqid = require('uniqid');
 const Blog = require("../models/blogModel");
 const { APIError } = require('../models/errorModel');
 const {successResponseHandler} = require('./responseController');
+const { getImageURI } = require('../controllers/uploadController');
+const { uploader } = require('../config/cloudinaryConfig');
 
 
 const createBlog = async (req, res, next) => {
-    let selectQuery = "-_id";
+    let blogImage = undefined;
     try{
         let {blogTitle, blogContent, author, createdAt, tags, relatedLinks} = req.body;
-        // let blogImage = req.file.filename;
+        if(req.file){
+            let file = (await getImageURI(req)).content;
+            blogImage = (await uploader.upload(file)).url;
+        }
         let newBlog = await Blog.create({
             blogId: uniqid(),
             blogTitle,
             blogContent,
             author,
             tags,
-            relatedLinks
-        }).select(selectQuery);
-        res.send(newBlog);
+            relatedLinks,
+            blogImage,
+            createdAt
+        });
+        successResponseHandler({
+            res,
+            statusCode: 201,
+            data: newBlog
+        })
 
     }catch(err){
+        console.log(err);
        next(APIError.badRequest(err.message));
     }
 }
@@ -68,6 +80,12 @@ const updateBlog = async (req, res, next) => {
 
     try{
 
+        if(req.file){
+            let file = (await getImageURI(req)).content;
+            blogImage = (await uploader.upload(file)).url;
+            updates.blogImage = blogImage;
+        }
+
         let updatedBlog = await Blog.findOneAndUpdate({blogId: req.params.blogId}, updates, {
             new: true,
             runValidators: true
@@ -90,9 +108,6 @@ const updateBlog = async (req, res, next) => {
         }
         next({});
     }
-
-    // res.send(updates);
-    // console.log(typeof updates);
 
 }
 
