@@ -20,7 +20,7 @@ const createBlog = async (req, res, next) => {
             blogContent,
             author,
             tags,
-            relatedLinks,
+            relatedLinks: JSON.parse(relatedLinks),
             blogImage,
             createdAt
         });
@@ -64,7 +64,6 @@ const getBlogById = async (req, res, next) => {
         
 
     }catch(err){
-        console.log(err);
         next({});
     }
 }
@@ -74,6 +73,10 @@ const updateBlog = async (req, res, next) => {
     const updates = {};
 	Object.keys(req.body).forEach((key) => {
 		if (updateKeys.includes(key)) {
+            if(key === 'relatedLinks'){
+                updates[key] = JSON.parse(req.body[key]);    
+                return;
+            }
 			updates[key] = req.body[key];
 		}
 	});
@@ -106,7 +109,7 @@ const updateBlog = async (req, res, next) => {
             next(APIError.badRequest(err.message));
             return;
         }
-        next({});
+        next(APIError.internalError(err.message));
     }
 
 }
@@ -125,7 +128,6 @@ const deleteBlog = async (req, res, next) => {
         });
 
     }catch(err){
-        console.log(err);
         next({});
 
     }

@@ -5,8 +5,6 @@ const blogSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        // What happens in the background when you set unique = true
-        // how does it affect the performance of the application
     },
     author:{
         type:String, 
@@ -30,11 +28,8 @@ const blogSchema = mongoose.Schema({
         // add some vaidations
     },
     blogImage: {
-        type: String // not be mandtory // add random by default
+        type: String
         },
-        // should this be a subdocument 
-        // or include it in blogs schema 
-        // what are the differences 
     relatedLinks: {
         type:[{
             title:{
