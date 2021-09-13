@@ -39,12 +39,7 @@ const blogSchema = mongoose.Schema({
             href:{
                 type:String,
                 required:true,
-                validate: {
-                    validator: function(v) {
-                        return /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(v);
-                    },
-                    message: props => `${props.value} is not a valid URL.   `
-                }
+                
             }
         }],
         default:[]
