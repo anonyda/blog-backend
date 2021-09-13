@@ -2,7 +2,7 @@
   "name": "blog-backend",
   "version": "1.0.0",
   "description": "This project creates a backend service for blogs.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
